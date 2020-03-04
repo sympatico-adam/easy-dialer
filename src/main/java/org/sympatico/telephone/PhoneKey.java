@@ -1,15 +1,17 @@
 package org.sympatico.telephone;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class PhoneKey {
 
-    private final int digit;
+    private final ArrayList<PhoneKey> neighbors = new ArrayList<>();
 
-    private final ArrayList<PhoneKey> neighbors = new ArrayList<PhoneKey>();
+    private final char[] chars;
 
-    PhoneKey(int digit) {
-        this.digit = digit;
+    PhoneKey(char[] chars) {
+        this.chars = chars;
     }
 
     void addNeighbor(PhoneKey neighbor) {
@@ -21,15 +23,19 @@ public class PhoneKey {
         return neighbors.contains(phoneKey) || phoneKey.equals(this);
     }
 
+    public char[] letters() {
+        return chars;
+    }
+
     public String toString() {
-        return String.valueOf(digit);
+        return Arrays.toString(chars);
     }
 
     public int toInt() {
-        return digit;
+        return chars[0];
     }
 
     public boolean equals(PhoneKey phoneKey) {
-        return phoneKey.toInt() == this.digit;
+        return chars[0] == phoneKey.toInt();
     }
 }

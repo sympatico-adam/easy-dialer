@@ -4,6 +4,7 @@ package org.sympatico.telephone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 
@@ -20,12 +21,15 @@ public class Phone {
     static synchronized PhoneKey[] dial(String phoneNumber) throws NumberFormatException {
         if (connected.get())
             hangup();
-        if (!phonePattern.matcher(phoneNumber).matches())
-            throw new NumberFormatException("The provided string is not a valid phone number: " + phoneNumber);
+        //if (!phonePattern.matcher(phoneNumber).matches())
+        //    throw new NumberFormatException("The provided string is not a valid phone number: " + phoneNumber);
         char[] numberArray = phoneNumber.replaceAll("[-()\\s]", "").toCharArray();
         final PhoneKey[] dialedNumber = new PhoneKey[numberArray.length];
         for (int i = 0; i < numberArray.length; i++) {
-            dialedNumber[i] = (keypad.keyPress(numberArray[i] - '0'));
+            if (numberArray[i] - '0' <= 9)
+                dialedNumber[i] = (keypad.keyPress(numberArray[i] - '0'));
+            else if (numberArray[i] - '0' > 9 && numberArray[i] - '0' <= 74)
+                dialedNumber[i] = keypad.charToDigit(numberArray[i]);
         }
         connected.set(true);
         return dialedNumber;

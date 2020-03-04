@@ -16,18 +16,18 @@ public class PhoneTest {
         Logger.getGlobal().setLevel(Level.FINEST);
         Phone phone = new Phone();
         PhoneKey[] testResult;
-        String difficultNumber = "293-5712";
+        String difficultNumber = "(800) 555-1212";
         testResult = Phone.dial(difficultNumber);
         Assert.assertEquals("Phone number is easy: " + difficultNumber, DIFFICULT, Phone.getDifficulty(testResult));
-        String difficultLongNumber = "(555) 245-0242";
+        String difficultLongNumber = "(800) 555-BEEF";
         testResult = Phone.dial(difficultLongNumber);
         Assert.assertEquals("Phone number is easy: " + difficultLongNumber, DIFFICULT, Phone.getDifficulty(testResult));
-        String easyLongNumber = "(555) 245-1242";
+        String easyLongNumber = "(800) 555-2333";
         testResult = Phone.dial(easyLongNumber);
+        Assert.assertEquals("Phone number is not easy: " + easyLongNumber, DIFFICULT, Phone.getDifficulty(testResult));
+        String easy = "(223) 555-BEEF";
+        testResult = Phone.dial(easy);
         Assert.assertEquals("Phone number is not easy: " + easyLongNumber, EASY, Phone.getDifficulty(testResult));
-        String easyNumber = "123-5478";
-        testResult = Phone.dial(easyNumber);
-        Assert.assertEquals("Phone number is not easy: " + easyNumber, EASY, Phone.getDifficulty(testResult));
         try {
             String invalidNumber = "a12-45~6";
             Phone.dial(invalidNumber);
